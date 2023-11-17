@@ -7,7 +7,7 @@ export class AppController {
     return 'Goodbye world';
   }
 
-  @Get('cat/100')
+  @Get('cat/:catId')
   getMyCat() {
     return { name: 'Mruczek', id: 100 };
   }
