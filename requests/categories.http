@@ -12,3 +12,12 @@ GET http://localhost:3000/categories/73
 
 ###
 GET http://localhost:3000/categories/hello
+
+### Dodawanie nowej kategorii
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+   "name": "Art"
+}
+
