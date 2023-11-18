@@ -24,6 +24,6 @@ export class AppController {
 
   @Get(':id')
   getSingleCategory(@Param('id') categoryId: string) {
-    return this.categories[categoryId];
+    return this.categories.find((c) => c.id === Number(categoryId));
   }
 }

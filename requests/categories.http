@@ -9,3 +9,6 @@ GET http://localhost:3000/categories/7
 
 ###
 GET http://localhost:3000/categories/73
+
+###
+GET http://localhost:3000/categories/hello
