@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
 interface Category {
   id: number;
@@ -22,8 +22,8 @@ export class AppController {
     return this.categories;
   }
 
-  @Get('cat/:catId')
-  getMyCat() {
-    return { name: 'Mruczek', id: 100 };
+  @Get(':id')
+  getSingleCategory(@Param('id') categoryId: string) {
+    return this.categories[categoryId];
   }
 }
