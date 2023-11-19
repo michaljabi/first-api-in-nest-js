@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 interface Category {
   id: number;
@@ -16,10 +16,18 @@ export class AppController {
     { id: 6, name: 'Electronics' },
     { id: 7, name: 'Games' },
   ];
+  private nextId = 8;
 
   @Get()
   getAll(): Category[] {
     return this.categories;
+  }
+
+  @Post()
+  addNewCategory(@Body() payload: { name: string }) {
+    const category: Category = { id: this.nextId++, ...payload };
+    this.categories.push(category);
+    return category;
   }
 
   @Get(':id')
