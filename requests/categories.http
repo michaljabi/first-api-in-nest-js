@@ -36,5 +36,15 @@ Content-Type: application/json
   "name": "Troll!"
 }
 
+### Testowanie poprawności body #3 - hack my fields...
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Troll!",
+  "trollType": "Mountain"
+}
+
 ### 3.7 Usuwanie kategorii
 DELETE http://localhost:3000/categories/5
