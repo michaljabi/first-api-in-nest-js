@@ -21,5 +21,20 @@ Content-Type: application/json
    "name": "Art"
 }
 
+### Testowanie poprawności body
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{}
+
+### Testowanie poprawności body #2 - hack my id!
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Troll!"
+}
+
 ### 3.7 Usuwanie kategorii
 DELETE http://localhost:3000/categories/5
