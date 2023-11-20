@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { NewCategoryDto } from './new-category.dto';
 
 interface Category {
@@ -33,7 +41,11 @@ export class AppController {
 
   @Get(':id')
   getSingleCategory(@Param('id') categoryId: string) {
-    return this.categories.find((c) => c.id === Number(categoryId));
+    const category = this.categories.find((c) => c.id === Number(categoryId));
+    if (!category) {
+      throw new NotFoundException(`category with id: ${categoryId} not found`);
+    }
+    return category;
   }
 
   // rozwiązane zadanie 3.7:
