@@ -40,8 +40,8 @@ export class AppController {
   }
 
   @Get(':id')
-  getSingleCategory(@Param('id') categoryId: string) {
-    const category = this.categories.find((c) => c.id === Number(categoryId));
+  getSingleCategory(@Param('id') categoryId: number) {
+    const category = this.categories.find((c) => c.id === categoryId);
     if (!category) {
       throw new NotFoundException(`category with id: ${categoryId} not found`);
     }
@@ -50,10 +50,8 @@ export class AppController {
 
   // rozwiązane zadanie 3.7:
   @Delete(':id')
-  removeCategory(@Param('id') categoryId: string) {
-    this.categories = this.categories.filter(
-      (c) => c.id !== Number(categoryId),
-    );
-    return { id: Number(categoryId), removed: true };
+  removeCategory(@Param('id') categoryId: number) {
+    this.categories = this.categories.filter((c) => c.id !== categoryId);
+    return { id: categoryId, removed: true };
   }
 }
