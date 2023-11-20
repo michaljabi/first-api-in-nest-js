@@ -27,6 +27,15 @@ export class AppController {
   ];
   private nextId = 8;
 
+  // rozwiązane zadanie 4.6:
+  findOneCategoryById(id: number): Category {
+    const category = this.categories.find((c) => c.id === id);
+    if (!category) {
+      throw new NotFoundException(`category with id: ${id} not found`);
+    }
+    return category;
+  }
+
   @Get()
   getAll(): Category[] {
     return this.categories;
@@ -41,17 +50,14 @@ export class AppController {
 
   @Get(':id')
   getSingleCategory(@Param('id') categoryId: number) {
-    const category = this.categories.find((c) => c.id === categoryId);
-    if (!category) {
-      throw new NotFoundException(`category with id: ${categoryId} not found`);
-    }
-    return category;
+    return this.findOneCategoryById(categoryId);
   }
 
   // rozwiązane zadanie 3.7:
   @Delete(':id')
-  removeCategory(@Param('id') categoryId: number) {
-    this.categories = this.categories.filter((c) => c.id !== categoryId);
-    return { id: categoryId, removed: true };
+  removeCategory(@Param('id') id: number) {
+    this.findOneCategoryById(id);
+    this.categories = this.categories.filter((c) => c.id !== id);
+    return { id, removed: true };
   }
 }
