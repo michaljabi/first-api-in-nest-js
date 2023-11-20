@@ -21,3 +21,5 @@ Content-Type: application/json
    "name": "Art"
 }
 
+### 3.7 Usuwanie kategorii
+DELETE http://localhost:3000/categories/5

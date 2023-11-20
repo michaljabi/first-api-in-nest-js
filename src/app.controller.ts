@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 
 interface Category {
   id: number;
@@ -33,5 +33,14 @@ export class AppController {
   @Get(':id')
   getSingleCategory(@Param('id') categoryId: string) {
     return this.categories.find((c) => c.id === Number(categoryId));
+  }
+
+  // rozwiązane zadanie 3.7:
+  @Delete(':id')
+  removeCategory(@Param('id') categoryId: string) {
+    this.categories = this.categories.filter(
+      (c) => c.id !== Number(categoryId),
+    );
+    return { id: Number(categoryId), removed: true };
   }
 }
