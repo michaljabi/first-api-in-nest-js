@@ -7,24 +7,13 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { NewCategoryDto } from './new-category.dto';
-
-interface Category {
-  id: number;
-  name: string;
-}
+import { NewCategoryDto } from './dto/new-category.dto';
+import { Category } from './category.interface';
+import { categoriesList } from './categories-list';
 
 @Controller('categories')
-export class AppController {
-  private categories: Category[] = [
-    { id: 1, name: 'Groceries' },
-    { id: 2, name: 'Cosmetics' },
-    { id: 3, name: 'Toys' },
-    { id: 4, name: 'Dairy' },
-    { id: 5, name: 'Fashion' },
-    { id: 6, name: 'Electronics' },
-    { id: 7, name: 'Games' },
-  ];
+export class CategoriesController {
+  private categories: Category[] = categoriesList;
   private nextId = 8;
 
   // rozwiązane zadanie 4.6:
