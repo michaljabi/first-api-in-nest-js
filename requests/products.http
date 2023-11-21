@@ -3,7 +3,7 @@ POST http://localhost:3000/products
 Content-Type: application/json
 
 {
-  "title": "Kubek",
+  "name": "Kubek",
   "price": 18.25,
   "description": "Napij się prosto z Cuba",
   "image": "https://picsum.photos/id/30/1280/901"
@@ -20,7 +20,6 @@ PATCH http://localhost:3000/products/2
 Content-Type: application/json
 
 {
-  "id": 2,
   "description": "100% Porcelana"
 }
 
