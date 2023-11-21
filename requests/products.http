@@ -1,0 +1,28 @@
+### [C]reate new product:
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "title": "Kubek",
+  "price": 18.25,
+  "description": "Napij się prosto z Cuba",
+  "image": "https://picsum.photos/id/30/1280/901"
+}
+
+### [R]ead products:
+GET http://localhost:3000/products
+
+### [R]ead product:
+GET http://localhost:3000/products/2
+
+### [U]pdate product
+PATCH http://localhost:3000/products/2
+Content-Type: application/json
+
+{
+  "id": 2,
+  "description": "100% Porcelana"
+}
+
+### [D]elete product
+DELETE http://localhost:3000/products/1
