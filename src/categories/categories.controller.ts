@@ -11,6 +11,7 @@ import { NewCategoryDto } from './dto/new-category.dto';
 import { Category } from './category.interface';
 import { categoriesList } from './categories-list';
 
+// rozwiązane zadanie 5.5
 @Controller('categories')
 export class CategoriesController {
   private categories: Category[] = categoriesList;
