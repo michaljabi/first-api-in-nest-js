@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { NewProductDto } from './dto/new-product.dto';
 import { Product } from './product.interface';
@@ -40,8 +41,10 @@ export class ProductsController {
   }
 
   @Get()
-  getAll(): Product[] {
-    return this.products;
+  getAll(@Query('name') searchByName: string = ''): Product[] {
+    return this.products.filter((p) =>
+      p.name.toLowerCase().includes(searchByName.toLowerCase()),
+    );
   }
 
   @Get(':productId')

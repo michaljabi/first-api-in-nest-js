@@ -12,6 +12,9 @@ Content-Type: application/json
 ### [R]ead products:
 GET http://localhost:3000/products
 
+### Search products by name:
+GET http://localhost:3000/products?name=atu
+
 ### [R]ead product:
 GET http://localhost:3000/products/2
 
