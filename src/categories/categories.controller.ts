@@ -1,56 +1,28 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { NewCategoryDto } from './dto/new-category.dto';
-import { Category } from './category.interface';
-import { categoriesList } from './categories-list';
 import { CategoriesService } from './categories.service';
 
-// rozwiązane zadanie 5.5
 @Controller('categories')
 export class CategoriesController {
-  private categories: Category[] = categoriesList;
-  private nextId = 8;
-
   constructor(private categoriesService: CategoriesService) {}
 
-  // rozwiązane zadanie 4.6:
-  findOneCategoryById(id: number): Category {
-    const category = this.categories.find((c) => c.id === id);
-    if (!category) {
-      throw new NotFoundException(`category with id: ${id} not found`);
-    }
-    return category;
-  }
-
   @Get()
-  getAll(): Category[] {
-    return this.categories;
+  getAll() {
+    return this.categoriesService.getAll();
   }
 
   @Post()
   addNewCategory(@Body() payload: NewCategoryDto) {
-    const category: Category = { id: this.nextId++, ...payload };
-    this.categories.push(category);
-    return category;
+    return this.categoriesService.addNew(payload);
   }
 
   @Get(':id')
   getSingleCategory(@Param('id') categoryId: number) {
-    return this.findOneCategoryById(categoryId);
+    return this.categoriesService.getOneById(categoryId);
   }
 
-  // rozwiązane zadanie 3.7:
   @Delete(':id')
   removeCategory(@Param('id') id: number) {
-    this.findOneCategoryById(id);
-    this.categories = this.categories.filter((c) => c.id !== id);
-    return { id, removed: true };
+    return this.categoriesService.removeById(id);
   }
 }
