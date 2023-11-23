@@ -3,11 +3,14 @@ import { productList } from './product-list';
 import { Product } from './product.interface';
 import { NewProductDto } from './dto/new-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class ProductsService {
   private productId: number = productList.length;
   private products: Product[] = productList;
+
+  constructor(private categoriesService: CategoriesService) {}
 
   private findProduct(id: number): Product {
     const product = this.products.find((p) => p.id === id);
@@ -18,6 +21,7 @@ export class ProductsService {
   }
 
   createNew(product: NewProductDto): Product {
+    this.categoriesService.getOneById(product.categoryId);
     const newProduct: Product = {
       id: this.productId++,
       stock: 0,
