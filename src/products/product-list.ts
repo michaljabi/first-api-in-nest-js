@@ -7,6 +7,7 @@ export const productList: Product[] = [
     price: 1899.99,
     image: 'https://picsum.photos/id/26/4209/2769',
     stock: 1,
+    categoryId: 5,
   },
   {
     id: 2,
@@ -15,6 +16,7 @@ export const productList: Product[] = [
     description: 'Kuchnia śródziemnomorska',
     image: 'https://picsum.photos/id/24/4855/1803',
     stock: 65,
+    categoryId: 1,
   },
   {
     id: 3,
@@ -23,6 +25,7 @@ export const productList: Product[] = [
     description: 'Wszystkie elementy w komplecie. Brakuje śrubek',
     image: 'https://picsum.photos/id/36/4179/2790',
     stock: 2,
+    categoryId: 6,
   },
   {
     id: 4,
@@ -30,6 +33,7 @@ export const productList: Product[] = [
     price: 450,
     image: 'https://picsum.photos/id/39/3456/2304',
     stock: 20,
+    categoryId: 6,
   },
   {
     id: 5,
@@ -39,5 +43,6 @@ export const productList: Product[] = [
       'Świetnie prezentuje się na stole, dodatkowo posiada wyjście AUX!',
     image: 'https://picsum.photos/id/529/4000/3000',
     stock: 3,
+    categoryId: 6,
   },
 ];
