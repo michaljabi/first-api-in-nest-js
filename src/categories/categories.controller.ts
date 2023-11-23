@@ -10,12 +10,15 @@ import {
 import { NewCategoryDto } from './dto/new-category.dto';
 import { Category } from './category.interface';
 import { categoriesList } from './categories-list';
+import { CategoriesService } from './categories.service';
 
 // rozwiązane zadanie 5.5
 @Controller('categories')
 export class CategoriesController {
   private categories: Category[] = categoriesList;
   private nextId = 8;
+
+  constructor(private categoriesService: CategoriesService) {}
 
   // rozwiązane zadanie 4.6:
   findOneCategoryById(id: number): Category {
