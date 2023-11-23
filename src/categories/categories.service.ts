@@ -6,7 +6,10 @@ import { NewCategoryDto } from './dto/new-category.dto';
 @Injectable()
 export class CategoriesService {
   private categories: Category[] = categoriesList;
-  private nextId = 8;
+
+  private generateNextId(): number {
+    return Math.max(...this.categories.map((c) => c.id)) + 1;
+  }
 
   private find(id: number): Category {
     const category = this.categories.find((c) => c.id === id);
@@ -21,7 +24,7 @@ export class CategoriesService {
   }
 
   addNew(categoryDto: NewCategoryDto): Category {
-    const category: Category = { id: this.nextId++, ...categoryDto };
+    const category: Category = { id: this.generateNextId(), ...categoryDto };
     this.categories.push(category);
     return category;
   }
