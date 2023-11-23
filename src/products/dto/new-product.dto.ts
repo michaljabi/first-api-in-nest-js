@@ -19,6 +19,11 @@ export class NewProductDto {
   @IsUrl({ require_protocol: true })
   image: string;
 
+  @IsNumber()
+  @IsInt()
+  @IsPositive()
+  categoryId: number;
+
   @IsString()
   @IsOptional()
   description?: string;
