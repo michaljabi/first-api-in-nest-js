@@ -21,6 +21,7 @@ export class ProductsController {
 
   @Post()
   addNew(@Body() product: NewProductDto): Product {
+    console.log('About to add', product);
     return this.productsService.createNew(product);
   }
 

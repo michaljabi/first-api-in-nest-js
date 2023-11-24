@@ -32,6 +32,7 @@ export class ProductsService {
       ...product,
     };
     this.products.push(newProduct);
+    console.log('Created product with id:', newProduct.id);
     return newProduct;
   }
 
@@ -42,6 +43,7 @@ export class ProductsService {
   }
 
   getOneById(id: number) {
+    console.log('Read product id:', id);
     return this.findProduct(id);
   }
 
