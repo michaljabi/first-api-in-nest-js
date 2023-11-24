@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Logger,
   Param,
   Patch,
   Post,
@@ -17,11 +18,13 @@ import { ProductsService } from './products.service';
 
 @Controller('products')
 export class ProductsController {
+  private logger = new Logger(ProductsController.name);
+
   constructor(private productsService: ProductsService) {}
 
   @Post()
   addNew(@Body() product: NewProductDto): Product {
-    console.log('About to add', product);
+    this.logger.log('About to add', product);
     return this.productsService.createNew(product);
   }
 
