@@ -7,10 +7,14 @@ import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class ProductsService {
-  private productId: number = productList.length;
   private products: Product[] = productList;
 
   constructor(private categoriesService: CategoriesService) {}
+
+  // rozwiązane zadanie 6.9
+  private generateNextId(): number {
+    return Math.max(...this.products.map((c) => c.id)) + 1;
+  }
 
   private findProduct(id: number): Product {
     const product = this.products.find((p) => p.id === id);
@@ -23,7 +27,7 @@ export class ProductsService {
   createNew(product: NewProductDto): Product {
     this.categoriesService.getOneById(product.categoryId);
     const newProduct: Product = {
-      id: this.productId++,
+      id: this.generateNextId(),
       stock: 0,
       ...product,
     };
@@ -31,7 +35,7 @@ export class ProductsService {
     return newProduct;
   }
 
-  getAll(name: string = ''): Product[] {
+  getAll(name: string = ''): readonly Product[] {
     return this.products.filter((p) =>
       p.name.toLowerCase().includes(name.toLowerCase()),
     );
@@ -42,6 +46,10 @@ export class ProductsService {
   }
 
   update(id: number, partialProduct: UpdateProductDto) {
+    // rozwiązane zadanie 6.9
+    if (partialProduct.categoryId) {
+      this.categoriesService.getOneById(partialProduct.categoryId);
+    }
     const productToUpdate = this.findProduct(id);
     Object.assign(productToUpdate, partialProduct);
     return productToUpdate;
