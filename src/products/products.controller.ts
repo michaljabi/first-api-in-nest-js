@@ -25,7 +25,7 @@ export class ProductsController {
   }
 
   @Get()
-  getAll(@Query('name') searchByName: string): Product[] {
+  getAll(@Query('name') searchByName: string): readonly Product[] {
     return this.productsService.getAll(searchByName);
   }
 
