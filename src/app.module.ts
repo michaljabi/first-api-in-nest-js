@@ -9,9 +9,12 @@ import { LoggerModule } from 'nestjs-pino';
   imports: [
     LoggerModule.forRoot({
       pinoHttp: {
+        level: 'debug',
+        useLevel: 'debug',
         transport: {
           target: 'pino-pretty',
         },
+        quietReqLogger: true,
       },
     }),
   ],
