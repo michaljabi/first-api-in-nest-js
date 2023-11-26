@@ -4,6 +4,7 @@ import { ProductsController } from './products/products.controller';
 import { ProductsService } from './products/products.service';
 import { CategoriesService } from './categories/categories.service';
 import { LoggerModule } from 'nestjs-pino';
+import * as path from 'path';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { LoggerModule } from 'nestjs-pino';
         level: 'debug',
         useLevel: 'debug',
         transport: {
-          target: 'pino-pretty',
+          target: path.resolve(__dirname, 'pino-pretty-config.js'),
         },
         quietReqLogger: true,
       },
