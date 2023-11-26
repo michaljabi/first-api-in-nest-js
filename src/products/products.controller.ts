@@ -24,7 +24,8 @@ export class ProductsController {
 
   @Post()
   addNew(@Body() product: NewProductDto): Product {
-    this.logger.log('About to add', JSON.stringify(product, null, 2));
+    this.logger.log('About to add');
+    this.logger.log(product);
     return this.productsService.createNew(product);
   }
 
