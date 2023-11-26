@@ -9,8 +9,9 @@ async function bootstrap() {
     bufferLogs: true,
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  const logger = app.get(Logger);
   app.useLogger(app.get(Logger));
   await app.listen(3000);
-  console.log('Server is running on http://localhost:3000');
+  logger.log('Server is running on http://localhost:3000');
 }
 bootstrap();

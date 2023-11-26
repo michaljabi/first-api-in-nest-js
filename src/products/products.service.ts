@@ -33,7 +33,7 @@ export class ProductsService {
       ...product,
     };
     this.products.push(newProduct);
-    console.log('Created product with id:', newProduct.id);
+    this.logger.log('Created product with id:', newProduct.id);
     return newProduct;
   }
 
