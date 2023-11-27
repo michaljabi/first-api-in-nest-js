@@ -8,6 +8,7 @@ import * as path from 'path';
 import { APP_FILTER } from '@nestjs/core';
 import { AllErrorsFilter } from './errors/all-errors.filter';
 import { CookieCheckMiddleware } from './middleware/cookie-check.middleware';
+import { LanguageExtractorMiddleware } from './middleware/language-extractor.middleware';
 
 @Module({
   imports: [
@@ -34,6 +35,8 @@ import { CookieCheckMiddleware } from './middleware/cookie-check.middleware';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CookieCheckMiddleware).forRoutes('*');
+    consumer
+      .apply(LanguageExtractorMiddleware, CookieCheckMiddleware)
+      .forRoutes('*');
   }
 }
