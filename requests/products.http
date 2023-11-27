@@ -21,8 +21,12 @@ Accept-Language: pl
 ### [R]ead products (Expect ERROR):
 GET http://localhost:3000/products/test-file
 
-### [R]ead products (Expect Uknown error):
+### [R]ead products (Expect sample error):
 GET http://localhost:3000/products/sample-error
+
+### [R]ead products (Expect sample error in polish):
+GET http://localhost:3000/products/sample-error
+Accept-Language: pl
 
 ### Search products by name:
 GET http://localhost:3000/products?name=atu

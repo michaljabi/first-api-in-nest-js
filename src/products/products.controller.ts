@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -10,12 +11,14 @@ import {
   Patch,
   Post,
   Query,
+  Req,
 } from '@nestjs/common';
 import { NewProductDto } from './dto/new-product.dto';
 import { Product } from './product.interface';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsService } from './products.service';
 import * as fsp from 'node:fs/promises';
+import { Request } from 'express';
 
 @Controller('products')
 export class ProductsController {
@@ -50,8 +53,12 @@ export class ProductsController {
   */
 
   @Get('sample-error')
-  async getSampleError() {
-    throw new Error('Test that this will be UNHANDLED !!!');
+  async getSampleError(@Req() req: Request) {
+    let errorMessage = 'Error with sample message';
+    if (req['language'] === 'pl') {
+      errorMessage = 'Błąd z przykładową wiadomością';
+    }
+    throw new BadRequestException(errorMessage);
   }
 
   @Get('test-file')
