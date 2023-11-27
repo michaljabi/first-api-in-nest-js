@@ -10,6 +10,10 @@ Content-Type: application/json
   "categoryId": 5
 }
 
+### [R]ead product (with some fake cookies):
+GET http://localhost:3000/products/90
+Set-Cookie: sessionId=38afes7a8; orderId=12;
+
 ### [R]ead products:
 GET http://localhost:3000/products
 

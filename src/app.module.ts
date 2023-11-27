@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { CategoriesController } from './categories/categories.controller';
 import { ProductsController } from './products/products.controller';
 import { ProductsService } from './products/products.service';
@@ -7,6 +7,7 @@ import { LoggerModule } from 'nestjs-pino';
 import * as path from 'path';
 import { APP_FILTER } from '@nestjs/core';
 import { AllErrorsFilter } from './errors/all-errors.filter';
+import { CookieCheckMiddleware } from './middleware/cookie-check.middleware';
 
 @Module({
   imports: [
@@ -31,4 +32,8 @@ import { AllErrorsFilter } from './errors/all-errors.filter';
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CookieCheckMiddleware).forRoutes('*');
+  }
+}
