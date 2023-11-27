@@ -5,6 +5,7 @@ import {
   Get,
   Logger,
   Param,
+  ParseIntPipe,
   Post,
 } from '@nestjs/common';
 import { NewCategoryDto } from './dto/new-category.dto';
@@ -27,7 +28,7 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  getSingleCategory(@Param('id') categoryId: number) {
+  getSingleCategory(@Param('id', ParseIntPipe) categoryId: number) {
     return this.categoriesService.getOneById(categoryId);
   }
 
