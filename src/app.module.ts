@@ -5,6 +5,8 @@ import { ProductsService } from './products/products.service';
 import { CategoriesService } from './categories/categories.service';
 import { LoggerModule } from 'nestjs-pino';
 import * as path from 'path';
+import { APP_FILTER } from '@nestjs/core';
+import { AllErrorsFilter } from './errors/all-errors.filter';
 
 @Module({
   imports: [
@@ -20,6 +22,13 @@ import * as path from 'path';
     }),
   ],
   controllers: [CategoriesController, ProductsController],
-  providers: [ProductsService, CategoriesService],
+  providers: [
+    ProductsService,
+    CategoriesService,
+    {
+      provide: APP_FILTER,
+      useClass: AllErrorsFilter,
+    },
+  ],
 })
 export class AppModule {}

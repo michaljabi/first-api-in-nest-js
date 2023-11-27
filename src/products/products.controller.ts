@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Logger,
-  NotFoundException,
   Param,
   Patch,
   Post,
@@ -36,6 +35,7 @@ export class ProductsController {
     return this.productsService.getAll(searchByName);
   }
 
+  /*
   @Get('test-file')
   async getAllFromFile() {
     try {
@@ -46,6 +46,13 @@ export class ProductsController {
         'Missing file. Cannot find not-existing-file.txt',
       );
     }
+  }
+  */
+
+  @Get('test-file')
+  async getAllFromFile() {
+    const fileData = await fsp.readFile('not-existing-file.txt');
+    return { fileData };
   }
 
   @Get(':productId')
