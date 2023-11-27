@@ -1,13 +1,23 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { NewCategoryDto } from './dto/new-category.dto';
 import { CategoriesService } from './categories.service';
 
 @Controller('categories')
 export class CategoriesController {
+  private logger = new Logger(CategoriesController.name);
   constructor(private categoriesService: CategoriesService) {}
 
   @Get()
   getAll() {
+    this.logger.debug(`getAll categories (GET)`);
     return this.categoriesService.getAll();
   }
 

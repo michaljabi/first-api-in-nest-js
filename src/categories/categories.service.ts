@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Category } from './category.interface';
 import { categoriesList } from './categories-list';
 import { NewCategoryDto } from './dto/new-category.dto';
 
 @Injectable()
 export class CategoriesService {
+  private logger = new Logger(CategoriesService.name);
   private categories: Category[] = categoriesList;
 
   private generateNextId(): number {
@@ -12,6 +13,7 @@ export class CategoriesService {
   }
 
   private find(id: number): Category {
+    this.logger.debug(`Searching for category ${id}`);
     const category = this.categories.find((c) => c.id === id);
     if (!category) {
       throw new NotFoundException(`category with id: ${id} not found`);
@@ -36,6 +38,7 @@ export class CategoriesService {
   removeById(id: number): { id: number; removed: boolean } {
     this.find(id);
     this.categories = this.categories.filter((c) => c.id !== id);
+    this.logger.log(`Removing category ${id}`);
     return { id, removed: true };
   }
 }

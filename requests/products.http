@@ -3,6 +3,7 @@ POST http://localhost:3000/products
 Content-Type: application/json
 
 {
+  "name": "Kubek",
   "price": 18.25,
   "description": "Napij się prosto z Cuba",
   "image": "https://picsum.photos/id/30/1280/901",
