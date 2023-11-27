@@ -4,11 +4,40 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
 
 @Catch(Error)
 export class AllErrorsFilter implements ExceptionFilter {
+  private logger = new Logger(AllErrorsFilter.name);
+
+  // rozwiązanie zadania 7.7
+  private wrapInEnvelope(
+    message: string,
+    statusCode = 500,
+    error = 'Internal Server Error',
+  ) {
+    return {
+      message,
+      error,
+      statusCode,
+    };
+  }
+
+  // rozwiązanie zadania 7.7
+  private isFileSystemError(exception: any): boolean {
+    return [
+      'EACCES',
+      'EEXIST',
+      'ENOENT',
+      'ENOTDIR',
+      'ENOTEMPTY',
+      'EMFILE',
+      'EISDIR',
+    ].includes(exception?.code);
+  }
+
   catch(exception: Error | any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -17,31 +46,21 @@ export class AllErrorsFilter implements ExceptionFilter {
       // jeżeli to NestJS'owy błąd, instancja HttpException, to obsłuż ją tak jak do tej pory:
       response.status(exception.getStatus()).json(exception.getResponse());
       // nie idź dalej, żeby nie zrobić "podwójnego response" na jeden request!
+      this.logger.debug(`(${exception.getStatus()}): ${exception.message}`);
+      this.logger.error(exception.getResponse());
       return;
     }
     // jeśli błąd posiada pole `code` sprawdź, czy to nie file-system error
-    if (
-      [
-        'EACCES',
-        'EEXIST',
-        'ENOENT',
-        'ENOTDIR',
-        'ENOTEMPTY',
-        'EMFILE',
-        'EISDIR',
-      ].includes(exception?.code)
-    ) {
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-        message: 'File i/o error (check logs)',
-        error: 'Internal Server Error',
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-      });
+    if (this.isFileSystemError(exception)) {
+      this.logger.error(exception.message);
+      return response
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json(this.wrapInEnvelope('File i/o error (check logs)'));
     }
     // Jeśli to nieznany błąd (inny niż HttpException):
-    response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-      message: 'Unknown error',
-      error: 'Internal Server Error',
-      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-    });
+    response
+      .status(HttpStatus.INTERNAL_SERVER_ERROR)
+      .json(this.wrapInEnvelope('Unknown error'));
+    this.logger.error(`Unknown error: ${exception.message}`);
   }
 }

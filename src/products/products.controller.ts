@@ -49,6 +49,11 @@ export class ProductsController {
   }
   */
 
+  @Get('sample-error')
+  async getSampleError() {
+    throw new Error('Test that this will be UNHANDLED !!!');
+  }
+
   @Get('test-file')
   async getAllFromFile() {
     const fileData = await fsp.readFile('not-existing-file.txt');
