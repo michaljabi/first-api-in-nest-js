@@ -11,14 +11,16 @@ import {
   Patch,
   Post,
   Query,
-  Req,
 } from '@nestjs/common';
 import { NewProductDto } from './dto/new-product.dto';
 import { Product } from './product.interface';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsService } from './products.service';
 import * as fsp from 'node:fs/promises';
-import { Request } from 'express';
+import {
+  AcceptableLanguages,
+  ClientLanguage,
+} from '../middleware/client-language.decorator';
 
 @Controller('products')
 export class ProductsController {
@@ -53,12 +55,12 @@ export class ProductsController {
   */
 
   @Get('sample-error')
-  async getSampleError(@Req() req: Request) {
-    let errorMessage = 'Error with sample message';
-    if (req['language'] === 'pl') {
-      errorMessage = 'Błąd z przykładową wiadomością';
-    }
-    throw new BadRequestException(errorMessage);
+  async getSampleError(@ClientLanguage() lang: AcceptableLanguages) {
+    throw new BadRequestException(
+      lang === 'pl'
+        ? 'Błąd z przykładową wiadomością'
+        : 'Error with sample message',
+    );
   }
 
   @Get('test-file')
