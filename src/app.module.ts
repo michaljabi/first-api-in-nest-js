@@ -9,6 +9,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { AllErrorsFilter } from './errors/all-errors.filter';
 import { CookieCheckMiddleware } from './middleware/cookie-check.middleware';
 import { LanguageExtractorMiddleware } from './middleware/language-extractor.middleware';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { LanguageExtractorMiddleware } from './middleware/language-extractor.mid
         quietReqLogger: true,
       },
     }),
+    ProductModule,
   ],
   controllers: [CategoriesController, ProductsController],
   providers: [
