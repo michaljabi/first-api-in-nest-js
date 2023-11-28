@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
-const HARDCODED_TOKEN = 'cbbU7yWFGznUx6V4gxq1a';
+const HARDCODED_TOKENS = ['cbbU7yWFGznUx6V4gxq1a', 'qEs8XSqkYrrw_fEq'];
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
@@ -12,6 +12,6 @@ export class ApiKeyGuard implements CanActivate {
 
     const token = (req.headers['authorization'] || '').replace('Bearer ', '');
 
-    return token === HARDCODED_TOKEN;
+    return HARDCODED_TOKENS.includes(token);
   }
 }
