@@ -8,6 +8,7 @@ import {
   HttpStatus,
   Logger,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -73,13 +74,13 @@ export class ProductsController {
   }
 
   @Get(':productId')
-  getOne(@Param('productId') productId: number): Product {
+  getOne(@Param('productId', ParseIntPipe) productId: number): Product {
     return this.productsService.getOneById(productId);
   }
 
   @Patch(':productId')
   update(
-    @Param('productId') productId: number,
+    @Param('productId', ParseIntPipe) productId: number,
     @Body() product: UpdateProductDto,
   ): Product {
     return this.productsService.update(productId, product);
@@ -87,7 +88,7 @@ export class ProductsController {
 
   @Delete(':productId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('productId') productId: number): void {
+  remove(@Param('productId', ParseIntPipe) productId: number): void {
     return this.productsService.removeById(productId);
   }
 }
