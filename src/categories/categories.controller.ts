@@ -7,9 +7,11 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { NewCategoryDto } from './dto/new-category.dto';
 import { CategoriesService } from './categories.service';
+import { ApiKeyGuard } from '../guards/api-key.guard';
 
 @Controller('categories')
 export class CategoriesController {
@@ -23,6 +25,7 @@ export class CategoriesController {
   }
 
   @Post()
+  @UseGuards(ApiKeyGuard)
   addNewCategory(@Body() payload: NewCategoryDto) {
     return this.categoriesService.addNew(payload);
   }
@@ -33,6 +36,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @UseGuards(ApiKeyGuard)
   removeCategory(@Param('id', ParseIntPipe) id: number) {
     return this.categoriesService.removeById(id);
   }
