@@ -29,6 +29,10 @@ GET http://localhost:3000/products/sample-error
 GET http://localhost:3000/products/sample-error
 Accept-Language: pl
 
+### [R]ead products (lang with q):
+GET http://localhost:3000/products/sample-error
+Accept-Language: fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, pl;q=0.5
+
 ### Search products by name:
 GET http://localhost:3000/products?name=atu
 
