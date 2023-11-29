@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { ProductsService } from '../product/products/products.service';
 
 @Injectable()
 export class OrdersService {
+  constructor(private productsService: ProductsService) {}
+
   create(createOrderDto: CreateOrderDto) {
     return 'This action adds a new order';
   }
