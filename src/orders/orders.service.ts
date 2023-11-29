@@ -8,6 +8,9 @@ export class OrdersService {
   constructor(private productsService: ProductsService) {}
 
   create(createOrderDto: CreateOrderDto) {
+    for (const { id, quantity } of createOrderDto.products) {
+      this.productsService.checkProductOnStock(id, quantity);
+    }
     return 'This action adds a new order';
   }
 
@@ -20,7 +23,7 @@ export class OrdersService {
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+    return `This action updates a #${id} order ${updateOrderDto.products}`;
   }
 
   remove(id: number) {

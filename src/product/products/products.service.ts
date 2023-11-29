@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { productList } from './product-list';
 import { Product } from './product.interface';
 import { NewProductDto } from './dto/new-product.dto';
@@ -41,6 +46,14 @@ export class ProductsService {
     return this.products.filter((p) =>
       p.name.toLowerCase().includes(name.toLowerCase()),
     );
+  }
+
+  checkProductOnStock(id: number, quantity: number) {
+    const product = this.findProduct(id);
+    if (product.stock < quantity) {
+      throw new BadRequestException(`Product :${id} is out of stock.`);
+    }
+    return true;
   }
 
   getOneById(id: number) {

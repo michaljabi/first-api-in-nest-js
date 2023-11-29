@@ -1,0 +1,23 @@
+### Zadanie 9.6 - rozwiązanie
+GET http://localhost:3000/orders
+
+### Nowe zamówienie
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+  "products": [
+    {
+      "id": 1,
+      "quantity": 1
+    },
+    {
+      "id": 2,
+      "quantity": 1
+    },
+    {
+      "id": 3,
+      "quantity": 2
+    }
+  ]
+}
