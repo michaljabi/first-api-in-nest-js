@@ -22,8 +22,8 @@ import * as fsp from 'node:fs/promises';
 import {
   AcceptableLanguages,
   ClientLanguage,
-} from '../middleware/client-language.decorator';
-import { ApiKeyGuard } from '../guards/api-key.guard';
+} from '../../middleware/client-language.decorator';
+import { ApiKeyGuard } from '../../guards/api-key.guard';
 
 @Controller('products')
 export class ProductsController {

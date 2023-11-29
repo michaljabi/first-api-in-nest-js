@@ -1,8 +1,4 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { CategoriesController } from './categories/categories.controller';
-import { ProductsController } from './products/products.controller';
-import { ProductsService } from './products/products.service';
-import { CategoriesService } from './categories/categories.service';
 import { LoggerModule } from 'nestjs-pino';
 import * as path from 'path';
 import { APP_FILTER } from '@nestjs/core';
@@ -25,10 +21,7 @@ import { ProductModule } from './product/product.module';
     }),
     ProductModule,
   ],
-  controllers: [CategoriesController, ProductsController],
   providers: [
-    ProductsService,
-    CategoriesService,
     {
       provide: APP_FILTER,
       useClass: AllErrorsFilter,
