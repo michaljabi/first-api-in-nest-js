@@ -1,9 +1,8 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-
-export type AcceptableLanguages = 'en' | 'pl';
+import { SupportedLanguages } from '../shared/language/language.service';
 
 export const ClientLanguage = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext): AcceptableLanguages => {
+  (data: unknown, ctx: ExecutionContext): SupportedLanguages => {
     const request = ctx.switchToHttp().getRequest();
     return request.language;
   },

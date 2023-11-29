@@ -19,11 +19,9 @@ import { Product } from './product.interface';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsService } from './products.service';
 import * as fsp from 'node:fs/promises';
-import {
-  AcceptableLanguages,
-  ClientLanguage,
-} from '../../middleware/client-language.decorator';
+import { ClientLanguage } from '../../middleware/client-language.decorator';
 import { ApiKeyGuard } from '../../guards/api-key.guard';
+import { SupportedLanguages } from '../../shared/language/language.service';
 
 @Controller('products')
 export class ProductsController {
@@ -59,7 +57,7 @@ export class ProductsController {
   */
 
   @Get('sample-error')
-  async getSampleError(@ClientLanguage() lang: AcceptableLanguages) {
+  async getSampleError(@ClientLanguage() lang: SupportedLanguages) {
     throw new BadRequestException(
       lang === 'pl'
         ? 'Błąd z przykładową wiadomością'
