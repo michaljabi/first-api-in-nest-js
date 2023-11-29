@@ -6,6 +6,7 @@ import { AllErrorsFilter } from './errors/all-errors.filter';
 import { CookieCheckMiddleware } from './middleware/cookie-check.middleware';
 import { LanguageExtractorMiddleware } from './middleware/language-extractor.middleware';
 import { ProductModule } from './product/product.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ProductModule } from './product/product.module';
       },
     }),
     ProductModule,
+    OrdersModule,
   ],
   providers: [
     {
