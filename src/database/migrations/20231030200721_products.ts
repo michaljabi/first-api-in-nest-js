@@ -10,9 +10,9 @@ export async function up(knex: Knex): Promise<void> {
     table.string('img_url').notNullable();
     table.text('description');
 
-    table.integer('categories_id').unsigned();
+    table.integer('category_id').unsigned();
     table
-      .foreign('categories_id')
+      .foreign('category_id')
       .references('id')
       .inTable('categories')
       .onDelete('SET NULL');

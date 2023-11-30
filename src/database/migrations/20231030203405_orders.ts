@@ -16,16 +16,16 @@ export async function up(knex: Knex): Promise<void> {
     table.increments('id').primary();
 
     table.decimal('quantity');
-    table.integer('orders_id').unsigned().notNullable();
+    table.integer('order_id').unsigned().notNullable();
     table
-      .foreign('orders_id')
+      .foreign('order_id')
       .references('id')
       .inTable('orders')
       .onDelete('CASCADE');
 
-    table.integer('products_id').unsigned().notNullable();
+    table.integer('product_id').unsigned().notNullable();
     table
-      .foreign('products_id')
+      .foreign('product_id')
       .references('id')
       .inTable('products')
       .onDelete('CASCADE');
