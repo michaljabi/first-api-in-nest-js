@@ -1,47 +1,44 @@
 import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Category } from './category.interface';
-import { categoriesList } from './categories-list';
 import { NewCategoryDto } from './dto/new-category.dto';
 import type { Knex } from 'knex';
 
 @Injectable()
 export class CategoriesService {
   private logger = new Logger(CategoriesService.name);
-  private categories: Category[] = categoriesList;
 
   constructor(@Inject('DbConnection') private readonly knex: Knex) {}
 
-  private generateNextId(): number {
-    return Math.max(...this.categories.map((c) => c.id)) + 1;
-  }
-
-  private find(id: number): Category {
+  private async find(id: number): Promise<Category> {
     this.logger.debug(`Searching for category ${id}`);
-    const category = this.categories.find((c) => c.id === id);
+    const category = await this.knex<Category>('categories')
+      .where({ id })
+      .first();
     if (!category) {
       throw new NotFoundException(`category with id: ${id} not found`);
     }
     return category;
   }
 
-  getAll(): readonly Category[] {
-    return this.categories;
+  getAll(): Promise<Category[]> {
+    return this.knex<Category>('categories');
   }
 
-  addNew(categoryDto: NewCategoryDto): Category {
-    const category: Category = { id: this.generateNextId(), ...categoryDto };
-    this.categories.push(category);
-    return category;
+  async addNew(categoryDto: NewCategoryDto): Promise<Category> {
+    const [newOne] = await this.knex<Category>('categories').insert({
+      ...categoryDto,
+    });
+    return this.getOneById(newOne);
   }
 
-  getOneById(id: number): Category {
+  getOneById(id: number): Promise<Category> {
     return this.find(id);
   }
 
-  removeById(id: number): { id: number; removed: boolean } {
-    this.find(id);
-    this.categories = this.categories.filter((c) => c.id !== id);
+  async removeById(id: number): Promise<{ id: number; removed: number }> {
+    await this.getOneById(id);
+    const removed = await this.knex('categories').where({ id }).delete();
     this.logger.log(`Removing category ${id}`);
-    return { id, removed: true };
+    return { id, removed };
   }
 }
