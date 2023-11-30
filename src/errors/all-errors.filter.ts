@@ -7,6 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { SqliteError } from 'better-sqlite3';
 
 @Catch(Error)
 export class AllErrorsFilter implements ExceptionFilter {
@@ -59,6 +60,12 @@ export class AllErrorsFilter implements ExceptionFilter {
       return response
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .json(this.wrapInEnvelope('File i/o error (check logs)'));
+    }
+    if (exception instanceof SqliteError) {
+      this.logger.error(exception.message);
+      return response
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json(this.wrapInEnvelope('DB query error'));
     }
     // Jeśli to nieznany błąd (inny niż HttpException):
     response

@@ -1,4 +1,10 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { Category } from './category.interface';
 import { NewCategoryDto } from './dto/new-category.dto';
 import type { Knex } from 'knex';
@@ -25,10 +31,19 @@ export class CategoriesService {
   }
 
   async addNew(categoryDto: NewCategoryDto): Promise<Category> {
-    const [newOne] = await this.knex<Category>('categories').insert({
-      ...categoryDto,
-    });
-    return this.getOneById(newOne);
+    try {
+      const [newOne] = await this.knex<Category>('categories').insert({
+        ...categoryDto,
+      });
+      return this.getOneById(newOne);
+    } catch (error) {
+      if (error?.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+        throw new BadRequestException(
+          `Category named "${categoryDto.name}" already exist`,
+        );
+      }
+      throw error;
+    }
   }
 
   getOneById(id: number): Promise<Category> {
