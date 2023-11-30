@@ -8,6 +8,7 @@
   "scripts": {
     "build": "nest build",
     "db:migrate": "knex migrate:latest",
+    "db:seed": "knex seed:run",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
