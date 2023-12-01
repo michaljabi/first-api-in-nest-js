@@ -17,7 +17,7 @@ export class NewProductDto {
   price: number;
 
   @IsUrl({ require_protocol: true })
-  image: string;
+  imgUrl: string;
 
   @IsNumber()
   @IsInt()
