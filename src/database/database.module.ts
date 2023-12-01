@@ -1,6 +1,7 @@
 import { Global, Logger, Module } from '@nestjs/common';
 import knex from 'knex';
 import knexConfig from '../../knexfile';
+import { Model } from 'objection';
 
 const logger = new Logger('DbConnection');
 // potrzebujemy referencji, aby potem wrzucić ją do exports!
@@ -11,6 +12,7 @@ const knexProvider = {
     logger.log('Knex connected');
     // Jeśli chcesz, podejrzyj sobie, co dokładnie importujemy:
     // logger.debug(knexConfig['development'])
+    Model.knex(connection);
     return connection;
   },
 };
