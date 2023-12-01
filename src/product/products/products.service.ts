@@ -1,55 +1,55 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { productList } from './product-list';
 import { Product } from './product.interface';
 import { NewProductDto } from './dto/new-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CategoriesService } from '../categories/categories.service';
+import type { Knex } from 'knex';
+import { Category } from '../categories/category.interface';
 
 @Injectable()
 export class ProductsService {
   private logger = new Logger(ProductsService.name);
-  private products: Product[] = productList;
 
-  constructor(private categoriesService: CategoriesService) {}
+  constructor(
+    private categoriesService: CategoriesService,
+    @Inject('DbConnection') private readonly knex: Knex,
+  ) {}
 
-  // rozwiązane zadanie 6.9
-  private generateNextId(): number {
-    return Math.max(...this.products.map((c) => c.id)) + 1;
-  }
-
-  private findProduct(id: number): Product {
-    const product = this.products.find((p) => p.id === id);
+  private async findProduct(id: number) {
+    const product = await this.knex<Product>('products').where({ id }).first();
     if (!product) {
       throw new NotFoundException(`Product with id: ${id} not found`);
     }
     return product;
   }
 
-  createNew(product: NewProductDto): Product {
-    this.categoriesService.getOneById(product.categoryId);
-    const newProduct: Product = {
-      id: this.generateNextId(),
+  async createNew(product: NewProductDto): Promise<Product> {
+    await this.categoriesService.getOneById(product.categoryId);
+    const [newOne] = await this.knex<Category>('products').insert({
       stock: 0,
       ...product,
-    };
-    this.products.push(newProduct);
+    });
+    const newProduct = await this.findProduct(newOne);
     this.logger.log(`Created product with id: ${newProduct.id}`);
     return newProduct;
   }
 
-  getAll(name: string = ''): readonly Product[] {
-    return this.products.filter((p) =>
-      p.name.toLowerCase().includes(name.toLowerCase()),
-    );
+  async getAll(name: string = ''): Promise<Product[]> {
+    const query = this.knex<Product>('products');
+    if (name) {
+      query.whereLike('name', `%${name}%`);
+    }
+    return query;
   }
 
-  checkProductOnStock(id: number, quantity: number) {
-    const product = this.findProduct(id);
+  async checkProductOnStock(id: number, quantity: number) {
+    const product = await this.findProduct(id);
     if (product.stock < quantity) {
       throw new BadRequestException(`Product :${id} is out of stock.`);
     }
@@ -66,18 +66,17 @@ export class ProductsService {
     return this.findProduct(id);
   }
 
-  update(id: number, partialProduct: UpdateProductDto) {
+  async update(id: number, partialProduct: UpdateProductDto) {
     // rozwiązane zadanie 6.9
     if (partialProduct.categoryId) {
-      this.categoriesService.getOneById(partialProduct.categoryId);
+      await this.categoriesService.getOneById(partialProduct.categoryId);
     }
-    const productToUpdate = this.findProduct(id);
-    Object.assign(productToUpdate, partialProduct);
-    return productToUpdate;
+    await this.knex<Product>('products').where({ id }).update(partialProduct);
+    return this.findProduct(id);
   }
 
-  removeById(id: number): void {
-    this.findProduct(id);
-    this.products = this.products.filter((p) => p.id !== id);
+  async removeById(id: number) {
+    await this.findProduct(id);
+    return this.knex<Product>('products').where({ id }).del();
   }
 }

@@ -15,7 +15,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { NewProductDto } from './dto/new-product.dto';
-import { Product } from './product.interface';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsService } from './products.service';
 import * as fsp from 'node:fs/promises';
@@ -31,14 +30,14 @@ export class ProductsController {
 
   @Post()
   @UseGuards(ApiKeyGuard)
-  addNew(@Body() product: NewProductDto): Product {
+  addNew(@Body() product: NewProductDto) {
     this.logger.log('About to add');
     this.logger.log(product);
     return this.productsService.createNew(product);
   }
 
   @Get()
-  getAll(@Query('name') searchByName: string): readonly Product[] {
+  getAll(@Query('name') searchByName: string) {
     return this.productsService.getAll(searchByName);
   }
 
@@ -72,7 +71,7 @@ export class ProductsController {
   }
 
   @Get(':productId')
-  getOne(@Param('productId', ParseIntPipe) productId: number): Product {
+  getOne(@Param('productId', ParseIntPipe) productId: number) {
     return this.productsService.getOneById(productId);
   }
 
@@ -80,13 +79,13 @@ export class ProductsController {
   update(
     @Param('productId', ParseIntPipe) productId: number,
     @Body() product: UpdateProductDto,
-  ): Product {
+  ) {
     return this.productsService.update(productId, product);
   }
 
   @Delete(':productId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('productId', ParseIntPipe) productId: number): void {
+  remove(@Param('productId', ParseIntPipe) productId: number) {
     return this.productsService.removeById(productId);
   }
 }
