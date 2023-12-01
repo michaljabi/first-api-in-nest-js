@@ -1,13 +1,13 @@
-import { Model } from 'objection';
+import { BaseModel } from '../../database/base-model';
 
-export class ProductModel extends Model {
+export class ProductModel extends BaseModel {
   static tableName = 'products';
 
   readonly id: number;
   name: string;
   price: number;
   stock: number;
-  image: string;
+  imgUrl: string;
   categoryId: number;
   description?: string;
 }

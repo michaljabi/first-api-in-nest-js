@@ -4,7 +4,6 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { Product } from './product.interface';
 import { NewProductDto } from './dto/new-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CategoriesService } from '../categories/categories.service';
@@ -28,7 +27,7 @@ export class ProductsService {
       .throwIfNotFound(`Product with id: ${id} not found`);
   }
 
-  async createNew(product: NewProductDto): Promise<Product> {
+  async createNew(product: NewProductDto) {
     await this.categoriesService.getOneById(product.categoryId);
     const newProduct = await this.productModel.query().insert({
       stock: 0,
