@@ -47,7 +47,7 @@ export class ProductsService {
     if (product.stock < quantity) {
       throw new BadRequestException(`Product :${id} is out of stock.`);
     }
-    return true;
+    return product;
   }
 
   getOneById(id: number) {
