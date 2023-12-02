@@ -24,6 +24,7 @@ export class ProductsService {
     return this.productModel
       .query()
       .findById(id)
+      .withGraphFetched('category')
       .throwIfNotFound(`Product with id: ${id} not found`);
   }
 
