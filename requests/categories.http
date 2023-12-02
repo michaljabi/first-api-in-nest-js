@@ -24,12 +24,14 @@ Content-Type: application/json
 
 ### Testowanie poprawności body
 POST http://localhost:3000/categories
+Authorization: Bearer qEs8XSqkYrrw_fEq
 Content-Type: application/json
 
 { "name": "" }
 
 ### Testowanie poprawności body #2 - hack my id!
 POST http://localhost:3000/categories
+Authorization: Bearer qEs8XSqkYrrw_fEq
 Content-Type: application/json
 
 {
@@ -39,6 +41,7 @@ Content-Type: application/json
 
 ### Testowanie poprawności body #3 - hack my fields...
 POST http://localhost:3000/categories
+Authorization: Bearer qEs8XSqkYrrw_fEq
 Content-Type: application/json
 
 {

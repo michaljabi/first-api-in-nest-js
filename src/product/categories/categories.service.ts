@@ -3,40 +3,39 @@ import {
   Inject,
   Injectable,
   Logger,
-  NotFoundException,
 } from '@nestjs/common';
-import { Category } from './category.interface';
 import { NewCategoryDto } from './dto/new-category.dto';
-import type { Knex } from 'knex';
+import { ModelClass } from 'objection';
+import { CategoryModel } from './category.model';
 
 @Injectable()
 export class CategoriesService {
   private logger = new Logger(CategoriesService.name);
 
-  constructor(@Inject('DbConnection') private readonly knex: Knex) {}
+  constructor(
+    @Inject('CategoryModel')
+    private readonly categoryModel: ModelClass<CategoryModel>,
+  ) {}
 
-  private async find(id: number): Promise<Category> {
+  private async find(id: number): Promise<CategoryModel> {
     this.logger.debug(`Searching for category ${id}`);
-    const category = await this.knex<Category>('categories')
-      .where({ id })
-      .first();
-    if (!category) {
-      throw new NotFoundException(`category with id: ${id} not found`);
-    }
-    return category;
+    return this.categoryModel
+      .query()
+      .findById(id)
+      .throwIfNotFound(`category with id: ${id} not found`);
   }
 
-  getAll(): Promise<Category[]> {
-    return this.knex<Category>('categories');
+  async getAll(name: string = '') {
+    return this.categoryModel.query().whereLike('name', `%${name}%`);
   }
 
-  async addNew(categoryDto: NewCategoryDto): Promise<Category> {
+  async addNew(categoryDto: NewCategoryDto): Promise<CategoryModel> {
     try {
-      const [newOne] = await this.knex<Category>('categories').insert({
+      return await this.categoryModel.query().insert({
         ...categoryDto,
       });
-      return this.getOneById(newOne);
     } catch (error) {
+      this.logger.log(error.constructor.name);
       if (error?.code === 'SQLITE_CONSTRAINT_UNIQUE') {
         throw new BadRequestException(
           `Category named "${categoryDto.name}" already exist`,
@@ -46,13 +45,13 @@ export class CategoriesService {
     }
   }
 
-  getOneById(id: number): Promise<Category> {
+  getOneById(id: number): Promise<CategoryModel> {
     return this.find(id);
   }
 
   async removeById(id: number): Promise<{ id: number; removed: number }> {
     await this.getOneById(id);
-    const removed = await this.knex('categories').where({ id }).delete();
+    const removed = await this.categoryModel.query().deleteById(id);
     this.logger.log(`Removing category ${id}`);
     return { id, removed };
   }
