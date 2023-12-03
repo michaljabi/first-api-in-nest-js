@@ -37,14 +37,18 @@ export class OrdersService {
       );
       totalPrice += product.price * quantity;
     }
-    return this.orderModel.query().insert({
+    const order = await this.orderModel.query().insert({
       title: await this.generateNextTitle(),
       totalPrice,
     });
+    for (const product of createOrderDto.products) {
+      await order.$relatedQuery('products').relate(product);
+    }
+    return order;
   }
 
   findAll() {
-    return this.orderModel.query();
+    return this.orderModel.query().withGraphFetched('products');
   }
 
   findOne(id: number) {
