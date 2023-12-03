@@ -11,12 +11,12 @@ export class OrdersRepository {
   ) {}
 
   async createNewWithProductList(
-    order: Omit<OrderModel, 'id'>,
+    order: Pick<OrderModel, 'title' | 'totalPrice'>,
     products: OrderedProduct[],
   ) {
     const newOrder = await this.orderModel.query().insert(order);
     for (const product of products) {
-      await order.$relatedQuery('products').relate(product);
+      await newOrder.$relatedQuery('products').relate(product);
     }
     return newOrder;
   }
@@ -31,5 +31,15 @@ export class OrdersRepository {
       .findById(id)
       .withGraphFetched('products')
       .throwIfNotFound(`Order with id: ${id} not found!`);
+  }
+
+  async countAllOrdersFromYear(year: number) {
+    return this.orderModel
+      .query()
+      .whereBetween('madeAt', [
+        `${year}-01-01 00:00:00`,
+        `${year + 1}-01-01 00:00:00`,
+      ])
+      .resultSize();
   }
 }
