@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class OrderedProduct {
+export class OrderedProduct {
   @IsPositive()
   @IsInt()
   id: number;
