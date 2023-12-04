@@ -1,17 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { LogLevel, ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
+  const { PORT, LOG_LEVEL } = process.env;
   const app = await NestFactory.create(AppModule, {
-    logger: ['debug'],
+    logger: [LOG_LEVEL as LogLevel],
     bufferLogs: true,
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   const logger = app.get(Logger);
   app.useLogger(app.get(Logger));
-  const { PORT } = process.env;
   await app.listen(PORT);
   logger.log(`Server is running on http://localhost:${PORT}`);
 }

@@ -13,15 +13,17 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    LoggerModule.forRoot({
-      pinoHttp: {
-        level: 'debug',
-        useLevel: 'debug',
-        transport: {
-          target: path.resolve(__dirname, 'pino-pretty-config.js'),
+    LoggerModule.forRootAsync({
+      useFactory: async () => ({
+        pinoHttp: {
+          level: process.env.LOG_LEVEL,
+          useLevel: 'debug',
+          transport: {
+            target: path.resolve(__dirname, 'pino-pretty-config.js'),
+          },
+          quietReqLogger: true,
         },
-        quietReqLogger: true,
-      },
+      }),
     }),
     ProductModule,
     OrdersModule,
