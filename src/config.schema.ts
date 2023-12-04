@@ -5,4 +5,7 @@ export const validationSchema = Joi.object({
   LOG_LEVEL: Joi.string()
     .valid('debug', 'info', 'warn', 'error', 'fatal')
     .default('info'),
+  NODE_ENV: Joi.string()
+    .valid('development', 'test', 'production')
+    .default('development'),
 });
