@@ -8,21 +8,31 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { SqliteError } from 'better-sqlite3';
+import { ConfigService } from '@nestjs/config';
 
 @Catch(Error)
 export class AllErrorsFilter implements ExceptionFilter {
   private logger = new Logger(AllErrorsFilter.name);
 
+  constructor(private readonly configService: ConfigService<NodeJS.AppEnv>) {}
+
   // rozwiązanie zadania 7.7
   private wrapInEnvelope(
     message: string,
+    exception: any,
     statusCode = 500,
     error = 'Internal Server Error',
   ) {
+    const isDevEnv =
+      this.configService.get<NodeJS.AppEnv['NODE_ENV']>('NODE_ENV') ===
+      'development';
     return {
       message,
       error,
       statusCode,
+      ...{
+        exception: isDevEnv ? exception : undefined,
+      },
     };
   }
 
@@ -59,18 +69,18 @@ export class AllErrorsFilter implements ExceptionFilter {
       this.logger.error(exception.message);
       return response
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .json(this.wrapInEnvelope('File i/o error (check logs)'));
+        .json(this.wrapInEnvelope('File i/o error (check logs)', exception));
     }
     if (exception instanceof SqliteError) {
       this.logger.error(exception.message);
       return response
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .json(this.wrapInEnvelope('DB query error'));
+        .json(this.wrapInEnvelope('DB query error', exception));
     }
     // Jeśli to nieznany błąd (inny niż HttpException):
     response
       .status(HttpStatus.INTERNAL_SERVER_ERROR)
-      .json(this.wrapInEnvelope('Unknown error'));
+      .json(this.wrapInEnvelope('Unknown error', exception));
     this.logger.error(`Unknown error: ${exception.message}`);
   }
 }
