@@ -10,6 +10,7 @@ import { OrdersModule } from './orders/orders.module';
 import { SharedModule } from './shared/shared.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
+import { validationSchema } from './config.schema';
 
 @Module({
   imports: [
@@ -29,7 +30,13 @@ import { ConfigModule } from '@nestjs/config';
     OrdersModule,
     SharedModule,
     DatabaseModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema,
+      validationOptions: {
+        abortEarly: true,
+      },
+    }),
   ],
   providers: [
     {
