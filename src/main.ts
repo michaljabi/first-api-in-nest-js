@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { LogLevel, ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
+import * as process from 'process';
 
 async function bootstrap() {
   const { PORT, LOG_LEVEL } = process.env;

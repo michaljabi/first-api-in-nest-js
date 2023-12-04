@@ -16,7 +16,7 @@ import { validationSchema } from './config.schema';
   imports: [
     LoggerModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: async (configService: ConfigService<NodeJS.AppEnv>) => ({
         pinoHttp: {
           level: configService.get('LOG_LEVEL'),
           useLevel: 'debug',
