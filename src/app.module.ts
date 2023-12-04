@@ -9,6 +9,7 @@ import { ProductModule } from './product/product.module';
 import { OrdersModule } from './orders/orders.module';
 import { SharedModule } from './shared/shared.module';
 import { DatabaseModule } from './database/database.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { DatabaseModule } from './database/database.module';
     OrdersModule,
     SharedModule,
     DatabaseModule,
+    ConfigModule.forRoot(),
   ],
   providers: [
     {
