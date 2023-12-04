@@ -5,6 +5,7 @@ import { ProductsService } from './products/products.service';
 import { CategoriesService } from './categories/categories.service';
 import { ProductModel } from './products/product.model';
 import { CategoryModel } from './categories/category.model';
+import { CategoriesRepository } from './categories/categories.repository';
 
 @Module({
   controllers: [CategoriesController, ProductsController],
@@ -19,6 +20,7 @@ import { CategoryModel } from './categories/category.model';
       provide: 'CategoryModel',
       useValue: CategoryModel,
     },
+    CategoriesRepository,
   ],
   exports: [ProductsService],
 })
