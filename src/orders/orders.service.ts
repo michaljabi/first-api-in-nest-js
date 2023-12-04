@@ -10,12 +10,10 @@ export class OrdersService {
     private readonly ordersRepository: OrdersRepository,
   ) {}
 
-  // To nie jest doskonałe 🪲!!
-  // Bo co jeśli usunę zamówienie z danego roku?!
   private async generateNextTitle() {
     const currentYear = new Date().getFullYear();
     const allOrdersFromThisYear =
-      await this.ordersRepository.countAllOrdersFromYear(currentYear);
+      await this.ordersRepository.getHighestOrderNumberFromYear(currentYear);
     const nextOrderNumber = allOrdersFromThisYear + 1;
     return `${nextOrderNumber}/${currentYear}`;
   }

@@ -33,13 +33,14 @@ export class OrdersRepository {
       .throwIfNotFound(`Order with id: ${id} not found!`);
   }
 
-  async countAllOrdersFromYear(year: number) {
-    return this.orderModel
+  async getHighestOrderNumberFromYear(year: number) {
+    const orders = await this.orderModel
       .query()
+      .select('title')
       .whereBetween('madeAt', [
         `${year}-01-01 00:00:00`,
         `${year + 1}-01-01 00:00:00`,
-      ])
-      .resultSize();
+      ]);
+    return Math.max(...orders.map(({ title }) => Number(title.split('/')[0])));
   }
 }
