@@ -9,15 +9,16 @@ import { ProductModule } from './product/product.module';
 import { OrdersModule } from './orders/orders.module';
 import { SharedModule } from './shared/shared.module';
 import { DatabaseModule } from './database/database.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { validationSchema } from './config.schema';
 
 @Module({
   imports: [
     LoggerModule.forRootAsync({
-      useFactory: async () => ({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
         pinoHttp: {
-          level: process.env.LOG_LEVEL,
+          level: configService.get('LOG_LEVEL'),
           useLevel: 'debug',
           transport: {
             target: path.resolve(__dirname, 'pino-pretty-config.js'),
