@@ -23,6 +23,7 @@ export class AllErrorsFilter implements ExceptionFilter {
     statusCode = 500,
     error = 'Internal Server Error',
   ) {
+    // rozwiązanie zadania 13.6
     const isDevEnv =
       this.configService.get<NodeJS.AppEnv['NODE_ENV']>('NODE_ENV') ===
       'development';
