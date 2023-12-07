@@ -20,7 +20,7 @@ export class ProductsService {
     private readonly productModel: ModelClass<ProductModel>,
   ) {}
 
-  private async findProduct(id: number) {
+  async findProduct(id: number) {
     return this.productModel
       .query()
       .findById(id)
