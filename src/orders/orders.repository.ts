@@ -41,6 +41,9 @@ export class OrdersRepository {
         `${year}-01-01 00:00:00`,
         `${year + 1}-01-01 00:00:00`,
       ]);
+    if (orders.length === 0) {
+      return 0;
+    }
     return Math.max(...orders.map(({ title }) => Number(title.split('/')[0])));
   }
 }
